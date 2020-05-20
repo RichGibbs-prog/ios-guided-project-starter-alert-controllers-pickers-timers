@@ -93,13 +93,24 @@ extension CountdownViewController: UIPickerViewDataSource {
         return countdownPickerData.count
     }
     
-    // similar to
+    // similar to numberOfRows in section
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        #warning("Change this to return the number of rows per component in the picker view")
-        return 0
+        return countdownPickerData[component].count
     }
 }
 
 extension CountdownViewController: UIPickerViewDelegate {
     
+    func pickerView(_ pickerView: UIPickerView,
+                    titleForRow row: Int,
+                    forComponent component: Int) -> String? {
+        
+        // Get the "section" of the cell
+        let componentData = countdownPickerData[component]
+        
+        // Get the "row" of the cell
+        let title = componentData[row] // "0" or "min"
+         
+        return title
+    }
 }
