@@ -37,6 +37,9 @@ class CountdownViewController: UIViewController {
         super.viewDidLoad()
         
         countdown.delegate = self
+        
+        countdownPicker.delegate = self
+        countdownPicker.dataSource = self
     }
     
     // MARK: - Actions
@@ -84,11 +87,13 @@ extension CountdownViewController: CountdownDelegate {
 }
 
 extension CountdownViewController: UIPickerViewDataSource {
+    
+    // similar to numberOfSections in the tableView
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        #warning("Change this to return the number of components for the picker view")
-        return 0
+        return countdownPickerData.count
     }
     
+    // similar to
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         #warning("Change this to return the number of rows per component in the picker view")
         return 0
