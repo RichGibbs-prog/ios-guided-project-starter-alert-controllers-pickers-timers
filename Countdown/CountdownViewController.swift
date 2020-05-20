@@ -29,20 +29,24 @@ class CountdownViewController: UIViewController {
         return data
     }()
     
+    let countdown = Countdown()
+    
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        countdown.delegate = self
     }
     
     // MARK: - Actions
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
-        showAlert()
+        countdown.start()
     }
     
     @IBAction func resetButtonTapped(_ sender: UIButton) {
-        
+        countdown.reset()
     }
     
     // MARK: - Private
@@ -75,7 +79,7 @@ extension CountdownViewController: CountdownDelegate {
     }
     
     func countdownDidFinish() {
-        
+        showAlert()
     }
 }
 
