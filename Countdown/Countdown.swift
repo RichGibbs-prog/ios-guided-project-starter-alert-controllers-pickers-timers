@@ -12,7 +12,7 @@ protocol CountdownDelegate: AnyObject {
     func countdownDidUpdate(timeRemaining: TimeInterval)
     func countdownDidFinish()
 }
-
+ 
 // Enum to track state of countdown
 enum CountdownState {
     case started // countdown is active and counting down
