@@ -29,6 +29,17 @@ class CountdownViewController: UIViewController {
         return data
     }()
     
+    var duration: TimeInterval {
+        
+        // Get the amount of time from the picker view's selected rows
+        let minutes = countdownPicker.selectedRow(inComponent: 0)
+        let seconds = countdownPicker.selectedRow(inComponent: 2)
+        
+        let totalSeconds = minutes * 60 + seconds
+        
+        return TimeInterval(totalSeconds)
+    }
+    
     let countdown = Countdown()
     
     // MARK: - View Lifecycle
@@ -112,5 +123,11 @@ extension CountdownViewController: UIPickerViewDelegate {
         let title = componentData[row] // "0" or "min"
          
         return title
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        // Set the countdown's duration to the duration shown in the picker view
+        countdown.duration = duration
     }
 }
