@@ -38,7 +38,7 @@ class CountdownViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
-        
+        showAlert()
     }
     
     @IBAction func resetButtonTapped(_ sender: UIButton) {
@@ -48,7 +48,11 @@ class CountdownViewController: UIViewController {
     // MARK: - Private
     
     private func showAlert() {
+        let alert = UIAlertController(title: "Timer Finished!",
+                                      message: "Your countdown has ended",
+                                      preferredStyle: .alert)
         
+        present(alert, animated: true, completion: nil)
     }
     
     private func updateViews() {
