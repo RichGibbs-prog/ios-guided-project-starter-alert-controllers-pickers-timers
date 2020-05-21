@@ -19,6 +19,13 @@ class CountdownViewController: UIViewController {
     
     // MARK: - Properties
     
+    private var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss.SS"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return formatter
+    }()
+    
     lazy private var countdownPickerData: [[String]] = {
         // Create string arrays using numbers wrapped in string values: ["0", "1", ... "60"]
         let minutes: [String] = Array(0...60).map { String($0) }
@@ -51,6 +58,14 @@ class CountdownViewController: UIViewController {
         
         countdownPicker.delegate = self
         countdownPicker.dataSource = self
+        
+        timeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: timeLabel.font.pointSize,
+        weight: .medium)
+        
+        countdownPicker.selectRow(1, inComponent: 0, animated: false)
+        countdownPicker.selectRow(30, inComponent: 2, animated: false)
+        
+        countdown.duration = duration
     }
     
     // MARK: - Actions
@@ -61,6 +76,7 @@ class CountdownViewController: UIViewController {
     
     @IBAction func resetButtonTapped(_ sender: UIButton) {
         countdown.reset()
+        updateViews()
     }
     
     // MARK: - Private
@@ -78,22 +94,41 @@ class CountdownViewController: UIViewController {
     }
     
     private func updateViews() {
+        switch countdown.state {
+        case .started:
+            let timeRemainingString = string(from: countdown.timeRemaining)
+            timeLabel.text = timeRemainingString
+            startButton.isEnabled = false
+            
+        case .finished:
+            timeLabel.text = string(from: 0)
+            startButton.isEnabled = true
+            
+        case .reset:
+            timeLabel.text = string(from: duration)
+            startButton.isEnabled = true
+        }
         
     }
     
     private func string(from duration: TimeInterval) -> String {
-        #warning("return a string value derived from the time interval passed in")
-        return ""
+        let date = Date(timeIntervalSinceReferenceDate: duration)
+        
+        // 00:00:01:30
+        let formattedString = dateFormatter.string(from: date)
+        
+        return  formattedString
     }
 }
 
 extension CountdownViewController: CountdownDelegate {
     func countdownDidUpdate(timeRemaining: TimeInterval) {
-        
+        updateViews()
     }
     
     func countdownDidFinish() {
         showAlert()
+        updateViews()
     }
 }
 
@@ -129,5 +164,6 @@ extension CountdownViewController: UIPickerViewDelegate {
         
         // Set the countdown's duration to the duration shown in the picker view
         countdown.duration = duration
+        updateViews()
     }
 }
